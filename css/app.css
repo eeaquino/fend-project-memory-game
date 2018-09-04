@@ -1,12 +1,8 @@
-html {
-    box-sizing: border-box;
-}
+html { box-sizing: border-box; }
 
 *,
 *::before,
-*::after {
-    box-sizing: inherit;
-}
+*::after { box-sizing: inherit; }
 
 html,
 body {
@@ -37,7 +33,7 @@ h1 {
  * Styles for the deck of cards
  */
 
-.deck {
+#deck {
     width: 660px;
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
@@ -49,33 +45,60 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 3em;
+    perspective: 1000px;
 }
 
-.deck .card {
-    height: 125px;
-    width: 125px;
-    background: #2e3d49;
-    font-size: 0;
-    color: #ffffff;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-}
-
-.deck .card.open {
-    transform: rotateY(0);
-    background: #02b3e4;
+    #deck .card {
+        list-style: none;
+        height: 125px;
+        width: 125px;
+        font-size: 0;
+        color: #ffffff;
+        cursor: pointer;
+        box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+        transition: 0.6s;
+        transform-style: preserve-3d;
+        position: relative;
+        border-radius: 8px;
+    }
+#deck .card.open, #deck .card.opened {
     cursor: default;
+    transform: rotateY(180deg);
 }
+    #deck .card .card_side {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        backface-visibility: hidden;
+        border-radius: 8px;
+    }
 
-.deck .card.show {
-    font-size: 33px;
-}
+    #deck .card .back {
+        background: #2e3d49;
+        
+    }
 
-.deck .card.match {
+    #deck .card .front {
+        background: #02b3e4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: rotateY(180deg);
+    }
+
+    
+
+#deck .card.show { font-size: 33px; }
+        #deck .card.noMatch {
+            animation: shake 1s;
+        }
+        #deck .card.noMatch .front {
+            background-color: red;
+        }
+
+#deck .card.match {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
@@ -106,4 +129,20 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+/*Animations*/
+
+@keyframes shake {
+    0%, 100% {
+        transform: rotateZ(0deg) rotateY(180deg);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        transform: rotateZ(-5deg) rotateY(180deg);
+    }
+
+    20%, 40%, 60%, 80% {
+        transform: rotateZ(5deg) rotateY(180deg);
+    }
 }
