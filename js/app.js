@@ -1,6 +1,7 @@
 //external components
 const congratsMessage = document.getElementById("congratsMessage");
 const winPanel = document.getElementById("win-panel");
+
 //create game object
 function game()
 {
@@ -188,10 +189,10 @@ function game()
         };
     };
 };
+
 //Initialize game
 var activeGame = new game();
 activeGame.createGame();
-
 
 activeGame.deck.addEventListener("click",
     (e) =>
@@ -223,10 +224,10 @@ activeGame.deck.addEventListener("click",
         }
     });
 let restart = document.getElementsByClassName("restart");
-for(let button of restart)
-{
-    button.addEventListener("click", ()=>
-    {
-        activeGame.createGame();
-    });
+for (let button of restart) {
+    button.addEventListener("click",
+        () =>
+        {
+            activeGame.createGame();
+        });
 }

@@ -67,6 +67,7 @@ h1 {
     font-size: 1.5em;
     font-family: 'Coda', cursive;
 }
+
 #deck .card.open {
     cursor: default;
     transform: rotateY(180deg);
@@ -121,9 +122,9 @@ h1 {
 }
 
 #win-panel div { align-self: center; }
-#win-panel>div {
-    text-align: center;
-}
+
+#win-panel > div { text-align: center; }
+
 #win-panel button {
     border-radius: 2px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
@@ -137,9 +138,9 @@ h1 {
     text-align: center;
     font-size: 1.5em;
 }
-#win-panel button:hover {
-    background-color: #2ecc76;
-}
+
+#win-panel button:hover { background-color: #2ecc76; }
+
 /*
  * Styles for the Score Panel
  */
@@ -167,34 +168,22 @@ h1 {
     cursor: pointer;
 }
 
-    /*Animations*/
-    @keyframes shake {
-        0%, 100% {
-            transform: rotateZ(0deg) rotateY(180deg);
-        }
+/*Animations*/
 
-        10%, 30%, 50%, 70%, 90% {
-            transform: rotateZ(-5deg) rotateY(180deg);
-        }
+@keyframes shake {
+    0%, 100% { transform: rotateZ(0deg) rotateY(180deg); }
 
-        20%, 40%, 60%, 80% {
-            transform: rotateZ(5deg) rotateY(180deg);
-        }
-    }
+    10%, 30%, 50%, 70%, 90% { transform: rotateZ(-5deg) rotateY(180deg); }
 
-    @keyframes pulse {
-        0% {
-            transform: scale(1) rotateY(180deg);
-        }
+    20%, 40%, 60%, 80% { transform: rotateZ(5deg) rotateY(180deg); }
+}
 
-        70% {
-            transform: scale(1.1) rotateY(180deg);
-        }
+@keyframes pulse {
+    0% { transform: scale(1) rotateY(180deg); }
 
-        100% {
-            transform: scale(1) rotateY(180deg);
-        }
-    }
-    .d-none {
-        display: none !important;
-    }
+    70% { transform: scale(1.1) rotateY(180deg); }
+
+    100% { transform: scale(1) rotateY(180deg); }
+}
+
+.d-none { display: none !important; }
