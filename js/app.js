@@ -1,115 +1,153 @@
 /*
  * Create a list that holds all of your cards
  */
-const deck = document.getElementById("deck");
 const cards = deck.getElementsByClassName("card");
-let animating = false;
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-shuffle(cards);
 
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-/* Events*/
-deck.addEventListener("click", (e) =>
+function game()
 {
-    let clickedCard = e.target.parentElement;
-    if (clickedCard.classList.contains("card")) {
-        openCard(clickedCard).then(() =>
-        {
-            if (countOpen() === 2) {
-                if (validatePair()) {
-                    //TODO
-                } else {
-                    shakeOpenCards().then(() =>
-                    {
-                        closeAllOpenCards();
-                    });
-                }
-            }
-        });
-    }
-});
-/*Animations and transitions*/
-function shakeOpenCards()
-{
-    return new Promise(function(resolve) {
-        let openCards = deck.getElementsByClassName("opened");
-        for (let card of openCards) {
-            card.classList.add("noMatch");
+    _this = this;
+    _this.deck = document.getElementById("deck");
+    _this.cardSymbol = [
+        "fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-bomb", "fa-leaf", "fa-bicycle",
+        "fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-bomb", "fa-leaf", "fa-bicycle"
+    ];
+    _this.selectedCards = [];
+    _this.cards = [];
+    _this.gameStarted = false;
+    _this.timeStarted = new Date().getTime() / 1000;
+    _this.timeFinished = new Date().getTime() / 1000;
+    _this.shuffle = () =>
+    {
+        let array = _this.cardSymbol;
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
         }
-        openCards[0].addEventListener("animationend",
-            function _tempShakeEnd(e)
+    };
+    _this.match = () =>
+    {
+        for (let card of _this.selectedCards) {
+            _this.matchCard(card);
+        }
+        _this.selectedCards = [];
+    };
+    _this.shakeOpenCards = () =>
+    {
+        return new Promise(function(resolve) {
+            for (let card of _this.selectedCards) {
+                card.classList.add("noMatch");
+            }
+            _this.selectedCards[0].addEventListener("animationend",
+                function _tempShakeEnd(e) {
+                    _this.selectedCards[0].removeEventListener(e.type, _tempShakeEnd, false);
+                    resolve(true);
+                });
+        });
+    };
+    _this.validateCards = () =>
+    {
+        let symbol1 = _this.cardSymbol[_this.selectedCards[0].dataset.idx];
+        let symbol2 = _this.cardSymbol[_this.selectedCards[1].dataset.idx];
+        return symbol1 === symbol2;
+    };
+    _this.createGame = () =>
+    {
+        _this.shuffle();
+        for (let s of _this.cardSymbol.keys()) {
+            _this.cards.push(_this.createCard(s));
+        }
+        _this.paintCards();
+    };
+    _this.paintCards = () =>
+    {
+        _this.deck.innerHTML = "";
+        var documentFragment = document.createDocumentFragment();
+        for (let c of _this.cards) {
+            documentFragment.appendChild(c);
+        }
+        _this.deck.appendChild(documentFragment);
+    };
+    _this.createCard = (index) =>
+    {
+        let li = document.createElement('li');
+        li.dataset.idx = index;
+        li.classList.add('card');
+        let back = document.createElement('div');
+        back.classList.add("card_side", "back");
+        let front = document.createElement('div');
+        front.classList.add("card_side", "front");
+        li.appendChild(back);
+        li.appendChild(front);
+        return li;
+    };
+    _this.openCard = (idx) =>
+    {
+        let card = _this.cards[idx];
+        return new Promise(function(resolve) {
+            let front = card.getElementsByClassName('front');
+            front[0].innerHTML = `<i class="fa ${_this.cardSymbol[idx]}"></i>`;
+            card.classList.add("open", "show");
+
+            card.addEventListener("transitionend",
+                function _tempTranEnd(e) {
+                    card.removeEventListener(e.type, _tempTranEnd, false);
+                    _this.selectedCards.push(card);
+                    resolve(true);
+                });
+        });
+    };
+    _this.closeAllOpenCards = () =>
+    {
+        for (let card of _this.selectedCards) {
+            _this.closeCard(card);
+        }
+        _this.selectedCards = [];
+    };
+    _this.closeCard = (card) =>
+    {
+        card.classList.remove("open", "show", "noMatch");
+        let front = card.getElementsByClassName('front');
+        front[0].innerHTML = "";
+    };
+    _this.matchCard = (card) =>
+    {
+        card.classList.add("match");
+    };
+    _this.checkWin = () =>
+    {
+        if (_this.deck.getElementsByClassName("match").length === _this.cards.length) {
+            //TODO
+        }
+    };
+};
+
+var activeGame = new game();
+activeGame.createGame();
+
+activeGame.deck.addEventListener("click",
+    (e) =>
+    {
+        let clickedCard = e.target.parentElement;
+        if (clickedCard.classList.contains("card")) {
+            let idx = clickedCard.dataset.idx;
+            activeGame.openCard(idx).then(() =>
             {
-                openCards[0].removeEventListener(e.type, _tempShakeEnd,false);
-                resolve(true);
+                if (activeGame.selectedCards.length === 2) {
+                    if (activeGame.validateCards()) {
+                        activeGame.match();
+
+                    } else {
+                        activeGame.shakeOpenCards().then(() =>
+                        {
+                            activeGame.closeAllOpenCards();
+                        });
+                    }
+                }
             });
+        }
     });
-    
-}
-function closeAllOpenCards()
-{
-    let openCards = deck.getElementsByClassName("opened");
-    while (openCards.length > 0) {
-        closeCard(openCards[0]);
-    }
-}
-function openCard(card)
-{
-    return new Promise(function(resolve) {
-        card.classList.add("open", "show");
-        card.addEventListener("transitionend",
-            function _tempTranEnd(e)
-            {
-                card.removeEventListener(e.type, _tempTranEnd,false);
-                card.classList.remove("open");
-                card.classList.add("opened");
-                resolve(true);
-            });
-    });
-    
-}
-function closeCard(card)
-{
-    card.classList.remove("opened", "show","noMatch");
-}
-/*Utilities */
-function countOpen()
-{
-    let openCards = deck.getElementsByClassName("opened");
-    return openCards.length;
-}
-/*Logic*/
-function validatePair()
-{
-    return false;
-}

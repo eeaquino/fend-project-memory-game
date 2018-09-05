@@ -48,61 +48,74 @@ h1 {
     perspective: 1000px;
 }
 
-    #deck .card {
-        list-style: none;
-        height: 125px;
-        width: 125px;
-        font-size: 0;
-        color: #ffffff;
-        cursor: pointer;
-        box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-        transition: 0.6s;
-        transform-style: preserve-3d;
-        position: relative;
-        border-radius: 8px;
-    }
-#deck .card.open, #deck .card.opened {
+#deck .card {
+    list-style: none;
+    height: 125px;
+    width: 125px;
+    font-size: 0;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+    border-radius: 8px;
+}
+
+#deck .card.open {
     cursor: default;
     transform: rotateY(180deg);
 }
-    #deck .card .card_side {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        backface-visibility: hidden;
-        border-radius: 8px;
-    }
 
-    #deck .card .back {
-        background: #2e3d49;
-        
-    }
+#deck .card .card_side {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    border-radius: 8px;
+}
 
-    #deck .card .front {
-        background: #02b3e4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform: rotateY(180deg);
-    }
+#deck .card .back { background: #2e3d49; }
+
+#deck .card .front {
+    background: #02b3e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateY(180deg);
+}
 
     
 
 #deck .card.show { font-size: 33px; }
-        #deck .card.noMatch {
-            animation: shake 1s;
-        }
-        #deck .card.noMatch .front {
-            background-color: red;
-        }
 
-#deck .card.match {
+#deck .card.noMatch { animation: shake 1s; }
+
+#deck .card.noMatch .front { background-color: red; }
+
+#deck .card.match { animation: pulse 1s; }
+
+#deck .card.match .front {
     cursor: default;
-    background: #02ccba;
+    background-color: #02ccba;
     font-size: 33px;
 }
+
+
+#win-panel {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    background-color: white;
+}
+
+#win-panel div { align-self: center; }
 
 /*
  * Styles for the Score Panel
@@ -134,15 +147,17 @@ h1 {
 /*Animations*/
 
 @keyframes shake {
-    0%, 100% {
-        transform: rotateZ(0deg) rotateY(180deg);
-    }
+    0%, 100% { transform: rotateZ(0deg) rotateY(180deg); }
 
-    10%, 30%, 50%, 70%, 90% {
-        transform: rotateZ(-5deg) rotateY(180deg);
-    }
+    10%, 30%, 50%, 70%, 90% { transform: rotateZ(-5deg) rotateY(180deg); }
 
-    20%, 40%, 60%, 80% {
-        transform: rotateZ(5deg) rotateY(180deg);
-    }
+    20%, 40%, 60%, 80% { transform: rotateZ(5deg) rotateY(180deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1) rotateY(180deg); }
+
+    70% { transform: scale(1.1) rotateY(180deg); }
+
+    100% { transform: scale(1) rotateY(180deg); }
 }
