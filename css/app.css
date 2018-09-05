@@ -56,7 +56,7 @@ h1 {
     color: #ffffff;
     cursor: pointer;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-    transition: 0.6s;
+    transition: 0.3s;
     transform-style: preserve-3d;
     position: relative;
     border-radius: 8px;
@@ -116,33 +116,6 @@ h1 {
 }
 
 #win-panel div { align-self: center; }
-
-/*
- * Styles for the Score Panel
- */
-
-.score-panel {
-    text-align: left;
-    width: 345px;
-    margin-bottom: 10px;
-}
-
-.score-panel .stars {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    margin: 0 5px 0 0;
-}
-
-.score-panel .stars li {
-    list-style: none;
-    display: inline-block;
-}
-
-.score-panel .restart {
-    float: right;
-    cursor: pointer;
-}
 #win-panel>div {
     text-align: center;
 }
@@ -159,9 +132,36 @@ h1 {
     text-align: center;
     font-size: 1.5em;
 }
-    #win-panel button:hover {
-        background-color: #2ecc76;
-    }
+#win-panel button:hover {
+    background-color: #2ecc76;
+}
+/*
+ * Styles for the Score Panel
+ */
+
+.score-panel {
+    text-align: left;
+    width: 345px;
+    margin-bottom: 10px;
+}
+
+.score-panel #stars {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+.score-panel #stars li {
+    list-style: none;
+    display: inline-block;
+}
+
+.score-panel .restart {
+    float: right;
+    cursor: pointer;
+}
+
     /*Animations*/
     @keyframes shake {
         0%, 100% {
@@ -189,4 +189,7 @@ h1 {
         100% {
             transform: scale(1) rotateY(180deg);
         }
+    }
+    .d-none {
+        display: none !important;
     }
