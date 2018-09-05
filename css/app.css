@@ -62,6 +62,11 @@ h1 {
     border-radius: 8px;
 }
 
+#congratsMessage {
+    margin: 20px;
+    font-size: 1.5em;
+    font-family: 'Coda', cursive;
+}
 #deck .card.open {
     cursor: default;
     transform: rotateY(180deg);

@@ -147,7 +147,7 @@ function game()
         if (_this.deck.getElementsByClassName("match").length === _this.cards.length) {
             let stars = _this.starPannel.getElementsByClassName("fa-star").length;
             let plural = stars > 1 ? "s" : "";
-            let text = `With ${_this.moves} Moves and ${stars} Star${plural}.<br> woohoo!!!`;
+            let text = `With ${_this.moves} Moves and ${stars} Star${plural}.<br> Woohoooooo!!!`;
             congratsMessage.innerHTML = text;
             winPanel.classList.remove("d-none");
         }
