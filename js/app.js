@@ -1,13 +1,14 @@
 //external components
 const congratsMessage = document.getElementById("congratsMessage");
 const winPanel = document.getElementById("win-panel");
-
 //create game object
 function game()
 {
     _this = this;
     _this.moves = 0;
     _this.busy = false;
+    _this.gameStarted = null;
+    _this.time = document.getElementById("time");
     _this.deck = document.getElementById("deck");
     _this.starPannel = document.getElementById("stars");
     _this.movesSpan = document.getElementById("moves");
@@ -75,7 +76,9 @@ function game()
         _this.cards = [];
         _this.moves = 0;
         _this.paintStars(3);
+        _this.gameStarted = null;
         _this.movesSpan.innerHTML = "0";
+        _this.time.innerHTML = "";
         for (let s of _this.cardSymbol.keys()) {
             _this.cards.push(_this.createCard(s));
         }
@@ -110,6 +113,7 @@ function game()
     _this.openCard = (idx) =>
     {
         let card = _this.cards[idx];
+        if (_this.gameStarted === null) _this.gameStarted = new Date().getTime() / 1000;
         return new Promise(function(resolve) {
             let front = card.getElementsByClassName('front');
             front[0].innerHTML = `<i class="fa ${_this.cardSymbol[idx]}"></i>`;
@@ -148,7 +152,8 @@ function game()
         if (_this.deck.getElementsByClassName("match").length === _this.cards.length) {
             let stars = _this.starPannel.getElementsByClassName("fa-star").length;
             let plural = stars > 1 ? "s" : "";
-            let text = `With ${_this.moves} Moves and ${stars} Star${plural}.<br> Woohoooooo!!!`;
+            let timeBetween = Math.ceil((new Date().getTime() / 1000) - _this.gameStarted);
+            let text = `With ${_this.moves} Moves, ${timeBetween} seconds, and ${stars} Star${plural}.<br> Woohoooooo!!!`;
             congratsMessage.innerHTML = text;
             winPanel.classList.remove("d-none");
         }
@@ -187,6 +192,12 @@ function game()
             _this.starPannel.innerHTML = "";
             _this.starPannel.appendChild(documentFragment);
         };
+    };
+    _this.showTime = () =>
+    {
+        if (_this.gameStarted === null) return;
+        let timeBetween = Math.ceil((new Date().getTime() / 1000) - _this.gameStarted);
+        _this.time.innerHTML = `${timeBetween} seconds`;
     };
 };
 
@@ -231,3 +242,4 @@ for (let button of restart) {
             activeGame.createGame();
         });
 }
+setInterval(activeGame.showTime,1000);
