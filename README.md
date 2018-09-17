@@ -17,5 +17,6 @@ Click on the refresh Icon to start over at any point.
 
 ## Dependencies
 
-Used Udacity Starter code. 
-Using [Font Awesome](https://fontawesome.com/)
+Used Udacity Starter code.  
+Using [Font Awesome](https://fontawesome.com/)  
+Using [Coda Font](https://fonts.googleapis.com/css?family=Coda)
